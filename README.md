@@ -41,8 +41,8 @@
 
 - Descargar e instalar el compilador de Apache Thrift:
      - http://www.apache.org/dyn/closer.cgi?path=/thrift/0.19.0/thrift-0.19.0.exe
-     - Renombrar el ejecutable a thrift.exe y copiarlo dentro del directorio bin que hay 
-     dentro del directorio donde se descomprimió Maven 
+     - Renombrar el ejecutable a thrift.exe (o nombre seria thrift) y copiarlo dentro del directorio bin que hay 
+     dentro del directorio de Maven. Si non funciona o ejecutable, executamos no terminal -> thrift.exe
      
 ## Descargar y descomprimir los ejemplos de la asignatura 
 
@@ -148,11 +148,11 @@
 - Copiar el driver JDBC de MySQL al directorio `C:\software\apache-tomcat-10.x.y\lib`
     - El driver JDBC se puede obtener de la siguiente ruta (siempre y cuando se hayan compilado previamente 
     los ejemplos):
-     `%HOME%\.m2\repository\com\mysql\mysql-connector-j\8.0.33\mysql-connector-j-8.0.33.jar`
+     `%HOME%\.m2\repository\com\mysql\mysql-connector-j\8.0.33\mysql-connector-j-8.0.33.jar` -> o %HOME% é o usuario que tes (C:/Usuarios/) e xa encontras o .m2 ahí
 
 - Definir un data source con nombre `jdbc/ws-javaexamples-ds`
     - Añadir las siguientes líneas al fichero `C:\software\apache-tomcat-10.x.y\conf\server.xml`, 
-      dentro de la etiqueta `<GlobalNamingResources>`
+      dentro de la etiqueta `<GlobalNamingResources>` -> si hai algo escrito facemolo despois do escrito e respetando a sangría
  
       ```shell
       <!-- MySQL -->
