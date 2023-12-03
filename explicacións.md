@@ -4,31 +4,74 @@
  >
  > 1) RestClientMovieService implementanse cada Caso de uso.
  > 2) Interfaz do cliente que implementa cada caso de uso -> ClientMovieService.
+ > 3) MovieServlet/SaleServlet son clases que cando o servidor recibe unha petición sobre unha URL, invoca ao servlet asociado. Ambas heredan da clase RestHttpServletTemplate que está en a ws.util e esta misma hereda da clase HttpServlet de Java que implementa os doGet, doPost...
+ > 4)ServletUtil é unha clase de ws.util con métodos utilidad para implementar Servlets (writeServiceResponse,  normalizePath, getMandatoryParameter...)
 
 ## Cliente lanza un comando que está na clase MovieServiceClient (-a,-u,-f,-b,-g)
 
 ### - Caso de uso 'añadir película' (-a):
 - 1)Chamamos ao metodo *addMovie*  que está na interfaz do cliente e implementada en RestClientMovieService. A addMovie pasaselle por parámetro:
-    + **new ClientMovieDto** e este ten como parámetro os args que se lle pasa ao executar o comando menos o id que está o seu campo como null xa que generao a capa modelo.
+    + **new ClientMovieDto** e este ten como parámetro os args que se lle pasa ao o comando a executar menos o id que está o seu campo como null xa que generao a capa modelo.
 
 - 2)En RestClientMovieService, miramos o método *addMovie(ClientMovieDto movie)*:
    
-  - 2.1) **ClassicHttpResponse response = (ClassicHttpResponse) Request.post(getEndpointAddress() + "movies").bodyStream(toInputStream(movie), ContentType.create("application/json")).execute().returnResponse();**
+  - 2.1) Creamos unha resposta http (ClassicHttpResponse response), que genera unha petición POST -> **ClassicHttpResponse response = (ClassicHttpResponse) Request.post(getEndpointAddress() + "movies").bodyStream(toInputStream(movie), ContentType.create("application/json")).execute().returnResponse();**
    
-       Créase unha resposta http (ClassicHttpResponse response), que genera unha petición post, pasandolle a este por parámetro:
+    Parámetros da creación da resposta:
     - **getEndpointAddress**(metodo propio que obtén a parte fixa da URL desde o ficheiro de configuración usando a clase ConfigurationParametersManager(clase que está na carpeta ws.util)) e aplicaselle o método *bodyStream* que ten como parámetros:
       
-      - **toInputStream**(clase propia que convirte un obxeto ClientMovieDto á súa representación JSON e devolve un InputStream do que poderleer o JSON).
+      - **toInputStream**(clase propia que convirte un obxeto ClientMovieDto á súa representación JSON e devolve un InputStream do que poder leer o JSON).
        
-      - **un ContentType**(para indicar 0 tipo de MIME, no noso caso o tipo de medio de comunicación sería "application/json").
+      - **un ContentType**(para indicar o tipo de MIME, no noso caso o tipo de medio de comunicación sería "application/json").
    
       - Ao bodyStream aplícaselle o método *execute* que envía a petición e devolve un obxeto response.
 
-  - 2.2) Valídase que o codigo da peticion fora 201 (creado correctamente) cun método da clase RestClientMovieService -> **validateStatusCode(HttpStatus.SC_CREATED, response);**
+  - 2.2) Valídase que o codigo da resposta fora 201 (creado correctamente) cun método da clase RestClientMovieService -> **validateStatusCode(HttpStatus.SC_CREATED, response);**
  
-  - 2.3) Devolvemos un JsonToClientMovieDtoConversor (fai conversións de ClientMovieDto a JSON (toObjectNode) ou coversións de ClientMovieDto desde JSON (toClientMovieDto)).
+  - 2.3) Devolvemos un JsonToClientMovieDtoConversor (fai conversións de ClientMovieDto a JSON (toObjectNode) ou coversións de ClientMovieDto desde JSON (toClientMovieDto)). ->**return JsonToClientMovieDtoConversor.toClientMovieDto(response. getEntity().getContent()).getMovieId();**
 
-- 3)Java ve que o cliente fai unha petición tipo ost entonces chama ao método **ProcessPost** da clase MovieServlet da da capa de Servicios:
+       + O **getEntity().getContent()** -> obtén o corpo da resposta
 
-    - 3.1) Miramos que a petición non estea vacía -> **ServletUtils.checkEmptyPath(req).**
+- 3)Java ve que o cliente fai unha petición tipo POST entonces chama ao método **processPost** da clase MovieServlet da da capa de Servicios:
+
+    - 3.1) Miramos que a petición non estea vacía -> **ServletUtils.checkEmptyPath(req);**
+ 
+    - 3.2) Creamos un 'movieDto' facendo un JsonToRestMovieDtoConversor (fai conversion de RestMovieDto a JSON (toObjectNode) ou conversións de RestMovieDto desde JSON (toRestMovieDto) -> **JsonToRestMovieDtoConversor.toRestMovieDto(req. getInputStream());**
+
+      Parámetro da conversión:
+
+         - **getInputStream** -> para leer o corpo da petición (faise nas peticións que teñen corpo com POST e PUT).
+
+    - 3.3) Creamos un 'movie' facendo un MovieToRestMovieDtoConversor (fai conversións entre Movie e RestMovieDto) -> **MovieToRestMovieDtoConversor.toMovie(movieDto);**
+ 
+    - 3.4) A ese 'movie' creámoslle unha instancia do método addMovie da capa Modelo para asignarlle un id -> **MovieServiceFactory.getService().addMovie(movie);**
+ 
+    - 3.5) Collemos o 'movieDto' e convertimolo a RestMovieDto con ese 'movie' instanciado -> **MovieToRestMovieDtoConversor.toRestMovieDto(movie);**
+ 
+    - 3.6) Creamos un string 'movieURL' que genera unha URL con normalizePath(recibe un String e devolve outro String igual ao recibido quitándolle o carácter ‘/’ en caso de que finalice con él) -> **ServletUtils.normalizePath (req.getRequestURL().toString()) + "/" + movie.getMovieId();**
+ 
+    - 3.7) Creamos en un Map clave Location e asignamoslle o 'movieURL'. Unha ves o temos creamos a resposta HTTP -> **ServletUtils.writeServiceResponse(resp, HttpServletResponse.SC_CREATED,	JsonToRestMovieDtoConversor.toObjectNode(movieDto), headers);**
+ 
+        Parámetros:
+
+         - **resp** -> objeto de tipo HttpServletResponse que se pasa por parámetro a **processPost**.
+         - **HttpServletResponse.SC_CREATED** -> código a enviar na resposta.
+         - **JsonToRestMovieDtoConversor.toObjectNode(movieDto)** ->  corpo a enviar na resposta, obxeto JsonNode de Jackson que debe ser o nodo raíz do árbol do JSON que se qere enviar
+         - **headers** -> Un mapa cos nomes e valores de cabeceiras a añadir na resposta
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      
   
