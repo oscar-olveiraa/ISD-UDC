@@ -13,7 +13,7 @@
      - Comprobamos que tamaño dos argumentos non sea 0.
      - Creamos unha instancia da interfaz ClientMovieService que é a que implementa a RestMovieService.
 
-- En cada flag, validanse os argumentos -> **validateArgs(args, 6, new int[] {2, 3, 5});**(neste caso mirase que haba no comando 6 argumentos e que os argumentos 2,3,5 sean numéricos) 
+- En cada comando, validanse os argumentos -> **validateArgs(args, 6, new int[] {2, 3, 5});**(neste caso mirase que haba no comando 6 argumentos e que os argumentos 2,3,5 sean numéricos) 
 
 
 ### - Caso de uso 'añadir película' (-a):
@@ -29,7 +29,7 @@
       
       - **toInputStream**(clase propia que convirte un obxeto ClientMovieDto á súa representación JSON e devolve un InputStream do que poder leer o JSON).
        
-      - **un ContentType**(para indicar o tipo de MIME, no noso caso o tipo de medio de comunicación sería "application/json").
+      - **ContentType**(para indicar o tipo de MIME, no noso caso o tipo de medio de comunicación sería "application/json").
    
       - Ao bodyStream aplícaselle o método *execute* que envía a petición e devolve un obxeto response.
 
@@ -66,7 +66,7 @@
          - **JsonToRestMovieDtoConversor.toObjectNode(movieDto)** ->  corpo a enviar na resposta, obxeto JsonNode de Jackson que debe ser o nodo raíz do árbol do JSON que se qere enviar
          - **headers** -> Un mapa cos nomes e valores de cabeceiras a añadir na resposta
      
-     - 3.8) Creo que asi o servlet 'avisaría' na capa de acceso a servicios que ten unha resposta e chegaríalle ao cliente.
+     - 3.8) Creo que asi o servlet 'avisaría' na capa de acceso a servicios que ten unha resposta e chegaríalle ao cliente cando facemos o 'execute.returnResponse' na creación da resposta.
 
 ### - Caso de uso 'eliminar película' (-r):
 
@@ -78,13 +78,13 @@
     - 2.1) Creamos unha resposta http (ClassicHttpResponse response), que genera unha petición DELETE -> **ClassicHttpResponse response = (ClassicHttpResponse) Request.delete(getEndpointAddress() + "movies/" + movieId).execute().returnResponse();**
  
          Parámetros da creación da resposta:
-         - **getEndpointAddress**(metodo propio que obtén a parte fixa da URL desde o ficheiro de configuración usando a clase ConfigurationParametersManager(clase que está na carpeta ws.util)). En esta petición non hai bodyStream porque non ten corpo esta petición, pasase todos os parámetros pola URL.
+         - **getEndpointAddress**(metodo propio que obtén a parte fixa da URL desde o ficheiro de configuración usando a clase ConfigurationParametersManager(clase que está na carpeta ws.util)). En esta petición non se aplica bodyStream porque non ten corpo, pasase todos os parámetros pola URL.
      
          - Aplicamos o método *execute* que envía a petición e devolve un obxeto response.
 
     - 2.2) Unha vez que temos a resposta que devolve o servlet, valídase que o codigo da resposta fora 204 (servidor procesou con éxito a solicitude, pero non devolve contido) cun método da clase RestClientMovieService -> **validateStatusCode(HttpStatus.SC_NO_CONTENT, response);**
  
-    - 2.3) Non se convirte de JSON a ClientMovieDto xa que non xe generou ningún JSON no corpo da resposta
+    - 2.3) Non se convirte de JSON a ClientMovieDto xa que non devolve nada, solo o código de que se procesou correctamente.
 
 
 - 3)Java ve que o cliente fai unha petición tipo DELETE entonces chama ao método **processDelete** da clase MovieServlet da capa de Servicios:
@@ -95,7 +95,44 @@
  
    - 3.3) Si non existe ninguha película con ese id, creamos unha resposta con código 403 (recibeu a petición pero rechaza enviar unha resposta) ca excepción de non poder eliminar esa película -> **ServletUtils.writeServiceResponse(resp, HttpServletResponse.SC_FORBIDDEN,MoviesExceptionToJsonConversor.toMovieNotRemovableException(ex),null);**
 
-       Si existe unha película con ese id, creamos unha resposta con código 402, onde os parámetros de rootNode(para JSON) e headers(para añadir parámetros ao corpo ou URL) son null -> **ServletUtils.writeServiceResponse(resp, HttpServletResponse.SC_NO_CONTENT, null, null);**
+       Si existe unha película con ese id, creamos unha resposta con código 204, onde os parámetros de rootNode(para JSON) e headers(para añadir parámetros ao corpo ou URL) son null -> **ServletUtils.writeServiceResponse(resp, HttpServletResponse.SC_NO_CONTENT, null, null);**
+
+
+### Caso de uso 'actualizar unha pelicula' (-u):
+
+- 1)Chamamos ao metodo *updateMovie* que está na interfaz do cliente e implementada en RestClientMovieService. A updateMovie pasaselle por parámetro:
+   + **new ClientMovieDto** e este ten como parámetro os args que se lle pasa ao comando (os argumentos son os campos de unha película, incluido o id).
+
+- 2)En RestClientMovieService, miramos o método *updateMovie(ClientMovieDto movie)*:
+
+     - 2.1)  Creamos unha resposta http (ClassicHttpResponse response), que genera unha petición PUT -> **ClassicHttpResponse response = (ClassicHttpResponse) Request.put(getEndpointAddress() + "movies/" + movie.getMovieId()).bodyStream (toInputStream(movie), ContentType.create("application/json")).execute().returnResponse();**
+ 
+        Parámetros da creación da resposta:
+
+        - **getEndpointAddress**(metodo propio que obtén a parte fixa da URL desde o ficheiro de configuración usando a clase ConfigurationParametersManager(clase que está na carpeta ws.util), neste caso, o id forma parte da parte fixa xa que non se pode modificar). Á petición aplicaselle o método *bodyStream* que ten como parámetros:
+             - **toInputStream**(clase propia que convirte un obxeto ClientMovieDto á súa representación JSON e devolve un InputStream do que poder leer o JSON).
+             - **ContentType**(para indicar o tipo de MIME, no noso caso o tipo de medio de comunicación sería "application/json").
+             - Ao bodyStream aplícaselle o método *execute* que envía a petición e devolve un obxeto response.
+               
+     - 2.2) Unha vez que temos a resposta que devolve o servlet, valídase que o codigo da resposta fora 204 (servidor procesou con éxito a solicitude, pero non devolve contido) cun método da clase RestClientMovieService -> **validateStatusCode(HttpStatus.SC_NO_CONTENT, response);**
+ 
+     - 2.3) Non se convirte de JSON a ClientMovieDto xa que non xe generou ningún JSON no corpo da resposta, solo se devolve o código.
+
+- 3)Java ve que o cliente fai unha petición tipo PUT entonces chama ao método **processPut** da clase MovieServlet da capa de Servicios:
+
+     - 3.1) Obtemos o id do path -> **Long movieId = ServletUtils.getIdFromPath(req, "movie");**(pasaselle un string movie para construir mensajes de error, mirar en código).
+ 
+     - 3.2) Creamos un 'movieDto' facendo un JsonToRestMovieDtoConversor (fai conversion de RestMovieDto a JSON (toObjectNode) ou conversións de RestMovieDto desde JSON (toRestMovieDto) -> **JsonToRestMovieDtoConversor.toRestMovieDto(req. getInputStream());**
+ 
+     - 3.3) Comprobamos que o 'movieId' que obtemos do path sea igual ao que temos no corpo da petición (no JSON) -> **if(!movieId.equals(movieDto.getMovieId()))** (si non é igual devolvemos un InputValidationException)
+ 
+     - 3.4) Si é igual, creamos un 'movie' facendo un MovieToRestMovieDtoConversor (fai conversións entre Movie e RestMovieDto) -> **MovieToRestMovieDtoConversor.toMovie(movieDto);**
+ 
+     - 3.5) A ese 'movie' creámoslle unha instancia do método updateMovie da capa Modelo para que se modifique na base de datos-> **MovieServiceFactory.getService().addMovie(movie);**
+
+     - 3.6) Creamos unha resposta con código 204, onde os parámetros de rootNode(para JSON) e headers(para añadir parámetros ao corpo ou URL) son null -> **ServletUtils.writeServiceResponse(resp, HttpServletResponse.SC_NO_CONTENT, null, null);**
+
+ 
 
 
 
