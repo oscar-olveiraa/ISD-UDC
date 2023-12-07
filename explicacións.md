@@ -110,9 +110,9 @@
         Parámetros da creación da resposta:
 
         - **getEndpointAddress**(metodo propio que obtén a parte fixa da URL desde o ficheiro de configuración usando a clase ConfigurationParametersManager(clase que está na carpeta ws.util), neste caso, o id forma parte da parte fixa xa que non se pode modificar). Á petición aplicaselle o método *bodyStream* que ten como parámetros:
-             - **toInputStream**(clase propia que convirte un obxeto ClientMovieDto á súa representación JSON e devolve un InputStream do que poder leer o JSON).
-             - **ContentType**(para indicar o tipo de MIME, no noso caso o tipo de medio de comunicación sería "application/json").
-             - Ao bodyStream aplícaselle o método *execute* que envía a petición e devolve un obxeto response.
+        - **toInputStream**(clase propia que convirte un obxeto ClientMovieDto á súa representación JSON e devolve un InputStream do que poder leer o JSON).
+        - **ContentType**(para indicar o tipo de MIME, no noso caso o tipo de medio de comunicación sería "application/json").
+        - Ao bodyStream aplícaselle o método *execute* que envía a petición e devolve un obxeto response.
                
      - 2.2) Unha vez que temos a resposta que devolve o servlet, valídase que o codigo da resposta fora 204 (servidor procesou con éxito a solicitude, pero non devolve contido) cun método da clase RestClientMovieService -> **validateStatusCode(HttpStatus.SC_NO_CONTENT, response);**
  
@@ -131,6 +131,26 @@
      - 3.5) A ese 'movie' creámoslle unha instancia do método updateMovie da capa Modelo para que se modifique na base de datos-> **MovieServiceFactory.getService().addMovie(movie);**
 
      - 3.6) Creamos unha resposta con código 204, onde os parámetros de rootNode(para JSON) e headers(para añadir parámetros ao corpo ou URL) son null -> **ServletUtils.writeServiceResponse(resp, HttpServletResponse.SC_NO_CONTENT, null, null);**
+
+
+
+### Caso de uso 'buscar pelicula por palabra clave' (-f):
+
+- 1)Chamamos ao metodo *findMovies* que está na interfaz do cliente e implementada en RestClientMovieService(neste caso chamase creando unha lista xa que a búsqueda devolve unha lista de peliculas con esa palabra clave). A findMovies pasaselle por parámetro:
+   + **args[1]** -> pasaselle a posición 1 da cadena do comando (palabra clave). A posición 0 é o '-f'. Non fai falta facer ningún parse xa que é un String.
+ 
+- 2)Imprimimos un resumen do resultado e recorremos en un bucle a lista que creamos no punto 1 para así sacar por pantalla a info das peliculas que teñen esa palabra clave.
+
+- 3)En RestClientMovieService, miramos o método *findMovies(ClientMovieDto movie)*:
+
+     - 3.1) Creamos unha resposta http (ClassicHttpResponse response), que genera unha petición GET -> **ClassicHttpResponse response = (ClassicHttpResponse) Request.get(getEndpointAddress() + "movies?keywords=" + URLEncoder.encode(keywords, 
+ "UTF-8")).execute().returnResponse();**
+
+        Parámetros da creación da resposta:
+
+        - **getEndpointAddress**(método propio que obtén a parte fixa da URL desde o ficheiro de configuración usando a clase ConfigurationParametersManager(clase que está na carpeta ws.util), neste caso, concaténase o string 'movies?keywords=' e 'URLEncoder.encode(keywords, "UTF-8") -> UTF-8 é unha codificación se utiliza para asegurarse de que os caracteres especiais, como espazos ou caracteres non ASCII, se representen correctamente e de maneira segura na URL, neste caso si por exemplo a palabra clave é 'ocho apellidos', concatenaríase á url como movies?keywords=ocho+apellidos'. As peticións tipo GET, os parámetros van na URL.
+
+        
 
  
 
