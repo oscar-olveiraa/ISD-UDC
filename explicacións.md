@@ -148,8 +148,35 @@
 
         Parámetros da creación da resposta:
 
-        - **getEndpointAddress**(método propio que obtén a parte fixa da URL desde o ficheiro de configuración usando a clase ConfigurationParametersManager(clase que está na carpeta ws.util), neste caso, concaténase o string 'movies?keywords=' e 'URLEncoder.encode(keywords, "UTF-8") -> UTF-8 é unha codificación se utiliza para asegurarse de que os caracteres especiais, como espazos ou caracteres non ASCII, se representen correctamente e de maneira segura na URL, neste caso si por exemplo a palabra clave é 'ocho apellidos', concatenaríase á url como movies?keywords=ocho+apellidos'. As peticións tipo GET, os parámetros van na URL.
+        - **getEndpointAddress**(método propio que obtén a parte fixa da URL desde o ficheiro de configuración usando a clase ConfigurationParametersManager(clase que está na carpeta ws.util), neste caso, concaténase o string 'movies?keywords=' e 'URLEncoder.encode(keywords, "UTF-8") -> UTF-8 é unha codificación se utiliza para asegurarse de que os caracteres especiais, como espazos ou caracteres non ASCII, se representen correctamente e de maneira segura na URL, neste caso si por exemplo a palabra clave é 'ocho apellidos', concatenaríase á url como movies?keywords=ocho+apellidos'. Nas peticións tipo GET, os parámetros van na URL polo que non hai corpo.
+      
+        - Aplicamos o método *execute* que envía a petición e devolve un obxeto response.
+      
+    - 3.2) Unha vez que temos a resposta que devolve o servlet, valídase que o codigo da resposta fora 200 (foi todo correctamente) cun método da clase RestClientMovieService -> **validateStatusCode(HttpStatus.SC_OK, response);
+ 
+    - 3.3) Devolvemos un JsonToClientMovieDtoConversor (fai conversións de ClientMovieDto a JSON (toObjectNode) ou coversións de ClientMovieDto desde JSON (toClientMovieDto)). ->**return JsonToClientMovieDtoConversor.toClientMovieDto(response. getEntity().getContent()). Esto devolve os campos de cada pelicula que coincide ca palabra clave.
+ 
+ 
+- 4)Java ve que o cliente fai unha petición tipo GET entonces chama ao método **processGET** da clase MovieServlet da capa de Servicios:
 
+    - 4.1) Miramos que a petición non estea vacía -> **ServletUtils.checkEmptyPath(req);**
+ 
+    - 4.2) Obtemos o valor do parámetro -> **String keyWords = req.getParameter("keywords");**
+ 
+    - 4.3) Creamos unha lista de películas facendo unha instancia do método findMovies da capa Modelo para que busque as películas na base de datos -> **List<Movie> movies = MovieServiceFactory.getService().findMovies(keyWords);**
+ 
+    - 4.4) Creamos unha lista de movieDtos facendo un JsonToRestMovieDtoConversor (fai conversion de RestMovieDto a JSON (toObjectNode) ou conversións de RestMovieDto desde JSON (toRestMovieDto) -> **JsonToRestMovieDtoConversor.toRestMovieDto (movies);**
+ 
+    - 4.5) Creamos unha resposta con código 200 -> **ServletUtils.writeServiceResponse(resp, HttpServletResponse.SC_OK,JsonToRestMovieDtoConversor.toArrayNode(movieDtos), null);**
+ 
+         Parámetros:
+
+         - **resp** -> objeto de tipo HttpServletResponse que se pasa por parámetro a **processGET**.
+         - **HttpServletResponse.SC_OK** -> código a enviar na resposta.
+         - **JsonToRestMovieDtoConversor.toArrayNode(movieDto)** ->  corpo a enviar na resposta, lista de obxetos RestMovieDto e xenera un árbol Jackson ca misma información.
+         - **headers** -> null
+     
+    - 4.6) O servlet 'avisaría' na capa de acceso a servicios que ten unha resposta e chegaríalle ao cliente cando facemos o 'execute.returnResponse' na creación da resposta.
         
 
  
