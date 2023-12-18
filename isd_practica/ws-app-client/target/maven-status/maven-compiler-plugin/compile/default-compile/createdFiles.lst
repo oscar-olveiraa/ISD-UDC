@@ -1,0 +1,13 @@
+es\udc\ws\app\client\service\ClientPartidoServiceFactory.class
+es\udc\ws\app\client\service\ClientPartidoService.class
+es\udc\ws\app\client\service\exceptions\ClientTicketAlreadyGivenException.class
+es\udc\ws\app\client\service\exceptions\ClientNotEnoughTicketsException.class
+es\udc\ws\app\client\service\rest\RestClientPartidoService.class
+es\udc\ws\app\client\service\dto\ClientPartidoDto.class
+es\udc\ws\app\client\service\rest\json\JsonToClientPartidoDtoConversor.class
+es\udc\ws\app\client\ui\AppServiceClient.class
+es\udc\ws\app\client\service\rest\json\JsonToClientCompraDtoConversor.class
+es\udc\ws\app\client\service\exceptions\ClientWrongCreditCardException.class
+es\udc\ws\app\client\service\dto\ClientCompraDto.class
+es\udc\ws\app\client\service\rest\json\JsonToClientExceptionConversor.class
+es\udc\ws\app\client\service\exceptions\ClientInvalidMatchDateException.class

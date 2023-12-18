@@ -1,0 +1,13 @@
+C:\Users\Óscar\it-2\ws-app-client\src\main\java\es\udc\ws\app\client\service\exceptions\ClientInvalidMatchDateException.java
+C:\Users\Óscar\it-2\ws-app-client\src\main\java\es\udc\ws\app\client\service\exceptions\ClientWrongCreditCardException.java
+C:\Users\Óscar\it-2\ws-app-client\src\main\java\es\udc\ws\app\client\service\rest\RestClientPartidoService.java
+C:\Users\Óscar\it-2\ws-app-client\src\main\java\es\udc\ws\app\client\service\rest\json\JsonToClientPartidoDtoConversor.java
+C:\Users\Óscar\it-2\ws-app-client\src\main\java\es\udc\ws\app\client\service\dto\ClientPartidoDto.java
+C:\Users\Óscar\it-2\ws-app-client\src\main\java\es\udc\ws\app\client\ui\AppServiceClient.java
+C:\Users\Óscar\it-2\ws-app-client\src\main\java\es\udc\ws\app\client\service\ClientPartidoServiceFactory.java
+C:\Users\Óscar\it-2\ws-app-client\src\main\java\es\udc\ws\app\client\service\rest\json\JsonToClientCompraDtoConversor.java
+C:\Users\Óscar\it-2\ws-app-client\src\main\java\es\udc\ws\app\client\service\dto\ClientCompraDto.java
+C:\Users\Óscar\it-2\ws-app-client\src\main\java\es\udc\ws\app\client\service\ClientPartidoService.java
+C:\Users\Óscar\it-2\ws-app-client\src\main\java\es\udc\ws\app\client\service\exceptions\ClientNotEnoughTicketsException.java
+C:\Users\Óscar\it-2\ws-app-client\src\main\java\es\udc\ws\app\client\service\exceptions\ClientTicketAlreadyGivenException.java
+C:\Users\Óscar\it-2\ws-app-client\src\main\java\es\udc\ws\app\client\service\rest\json\JsonToClientExceptionConversor.java

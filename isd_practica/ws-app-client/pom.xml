@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>16</source>
+                    <target>16</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+    <parent>
+        <groupId>es.udc.ws.app</groupId>
+        <artifactId>ws-app</artifactId>
+        <version>1.0.0</version>
+    </parent>
+    <artifactId>ws-app-client</artifactId>
+    <packaging>jar</packaging>
+    <name>WS App Client Subsystem</name>
+
+    <dependencies>
+        <dependency>
+            <groupId>es.udc.ws</groupId>
+            <artifactId>ws-util</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>es.udc.ws.app</groupId>
+            <artifactId>ws-app-thrift</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.httpcomponents.client5</groupId>
+            <artifactId>httpclient5-fluent</artifactId>
+        </dependency>
+    </dependencies>
+
+</project>
