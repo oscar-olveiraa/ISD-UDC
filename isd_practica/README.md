@@ -23,7 +23,7 @@ It requires the database server to be running.
 - Copy the `.war` file (`ws-app-service/target/ws-app-service.war`)
   to Tomcat's `webapps` directory.
 
-- Start Tomcat:
+- Start Tomcat (from Windows, click on the startup.bat):
 
       cd <TOMCAT_HOME>/bin
       startup.sh
