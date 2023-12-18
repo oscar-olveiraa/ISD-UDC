@@ -3,7 +3,7 @@
 ## Installing the development environment
 
 - [Instructions for Unix-like operating systems (spanish)] (https://github.com/udc-fic-isd/isd-entorno/blob/main/LEEME_UNIX.md).
-- [Instructions for Windows (spanish)] (https://github.com/udc-fic-isd/isd-entorno/blob/main/LEEME_WINDOWS.md).
+- [Instructions for Windows (spanish)] (https://github.com/oscar-olveiraa/ISD-UDC/blob/main/README.md).
 
 ## Initializing the database and building the project
 
