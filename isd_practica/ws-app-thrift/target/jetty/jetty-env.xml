@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE Configure PUBLIC "-//Jetty//Configure//EN" "https://www.eclipse.org/jetty/configure_10_0.dtd">
+
+<Configure class="org.eclipse.jetty.webapp.WebAppContext">
+
+    <New id="WS-JavaExamplesDS" class="org.eclipse.jetty.plus.jndi.Resource">
+        <Arg>jdbc/ws-javaexamples-ds</Arg>
+        <Arg>
+            <New class="org.apache.commons.dbcp2.BasicDataSource">
+                <Set name="url"><![CDATA[jdbc:mysql://localhost/ws?useSSL=false&serverTimezone=Europe/Madrid&allowPublicKeyRetrieval=true]]></Set>
+                <Set name="username">ws</Set>
+                <Set name="password">ws</Set>
+            </New>
+        </Arg>
+        <Call name="bindToENC">
+            <Arg>jdbc/ws-javaexamples-ds</Arg>
+        </Call>
+   </New>
+
+</Configure>

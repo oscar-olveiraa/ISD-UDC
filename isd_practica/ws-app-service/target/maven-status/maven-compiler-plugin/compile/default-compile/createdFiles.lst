@@ -1,0 +1,9 @@
+es\udc\ws\app\restservice\dto\RestCompraDto.class
+es\udc\ws\app\restservice\dto\RestPartidoDto.class
+es\udc\ws\app\restservice\json\AppExceptionToJsonConversor.class
+es\udc\ws\app\restservice\servlets\ComprasServlet.class
+es\udc\ws\app\restservice\dto\CompraToRestCompraDtoConversor.class
+es\udc\ws\app\restservice\json\JsonToRestCompraDtoConversor.class
+es\udc\ws\app\restservice\json\JsonToRestPartidoDtoConversor.class
+es\udc\ws\app\restservice\servlets\PartidosServlet.class
+es\udc\ws\app\restservice\dto\PartidoToRestPartidoDtoConversor.class

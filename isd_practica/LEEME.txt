@@ -1,0 +1,62 @@
+*Commits 14 diciembre de 2023:
+
+-Commit con mensaje '[FUNC-1' debería ser '[FUNC-2] Cambios en caso de uso Buscar por fecha en la capa cliente'
+
+
+*Commits 13 diciembre de 2023:
+
+-Commit con mensaje '[VARIOS] Retoques en la Capa Servicios para que funcione el Postman' debería ser '[FUNC-1] Retoques en el caso de uso Añadir partido de la Capa Servicios'
+
+
+*Commits 7 diciembre de 2023:
+
+-Commit con mensaje '[FUNC-3] Implementada funcionalidad findPartidos de la capa de acceso a servicios' debería ser '[FUNC-2] Implementada funcionalidad findPartidos de la capa de acceso a servicio'
+
+
+*Commits 1 noviembre de 2023
+
+-Commit con mensaje '[VARIOS] Implementacion metodo find del Dao de compra' deberia ser '[FUNC-6]Implementacion metodo find del Dao de compra y Implementacion y testeo caso de uso recoger entradas | Añadidas nuestras propias excepctiones de error al código'
+
+
+-Commit con mensaje '[VARIOS] Implementadas validaciones para compra' deberia ser '[FUNC-4] Implementadas validaciones para compra y creados test de comprobacion de compra inválida'
+
+
+-Commit con mensaje '[VARIOS] Implementado validadores para partido' deberia ser '[FUNC-1][FUNC-4] Implementado validadores para partido | Arreglado caso de uso comprar entradas'
+
+
+
+*Commits 29 octubre de 2023:
+
+-Commit con mensaje'[VARIOS] Test de funcionalidad 4 y arreglo casos de uso de PartidoService (y las clases que heredan de ella)' deberia ser '[FUNC-4] Testeado y implementado caso de uso Comprar Entradas | Arreglo casos de uso de PartidoService (y las clases que heredan de ella)'
+
+-Commit igual que o do 28 de octubre de 2023 porque tuvo un fallo o git ao facer un push
+
+
+
+*Commits 28 de octubre de 2023:
+
+-Commit con mensaje '[VARIOS] Creada la funcion updatePartido en PartidoServiceImpl' debería ser '[FUNC-4][FUNC-6] Creada la funcion updatePartido en AbstractSqlPartidoDao | Creada la funcion update en AbstractSqlCompraDao
+
+
+
+*Commits 27 de octubre de 2023:
+
+-Commit con mensaje '[Varios] Progreso test añadir cousas invalidas' deberia ser '[FUNC-1] Progeso test añadir cousas invalidas'
+
+
+
+*Commits 26 de octubre de 2023:
+
+-Commit con mensaje '[VARIOS] Esqueleto tests para comprobar partidos inválidos' deberia ser '[FUNC-1] Esqueleto tests para comprobar partidos iválidos'
+
+
+
+*Commits 22 de octubre de 2023:
+
+-Commit con mensaje '[VARIOS] Arreglado fallo test crear partido' debería ser '[FUNC-1] Arreglado fallo test crear partido'
+
+
+
+*Commits 19 de octubre de 2023:
+
+-Commit con mensaje '[VARIOS] Añadida factoria e clases abstratas para DAO' deberia ser '[VARIOS][FUNC-1]Añadida factoria e clases abstratas para DAO | Implementado metodo dar de alta partido'
