@@ -1,4 +1,4 @@
-# NOTAS Prácticas
+# NOTAS PRÁCTICAS
 
 ### *- Iteracion 1:* 4.6/5
 
